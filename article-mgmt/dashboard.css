@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+/* Dashboard starts */
+/* Navbar */
+.navbar-custom {
+  background-color: aqua;
+}
+.container-fluid {
+  color: black;
+}
+/* Navbar ends */
+/* Dashboard ends */
+
+/* Add articles page starts*/
+.outer-border {
+  width: 400px;
+  align-items: center;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  /* margin: 50px auto; */
+  padding: 100px;
+  background-color: rgb(234, 178, 178);
+}
+.add-article {
+  max-width: 400px;
+  /* margin: 20px auto; */
+  padding: 30px;
+  border: 1px solid #e0b9b9;
+  border-radius: 10px;
+  background: #ffefef;
+}
+.input-fields {
+  margin: 10px;
+  padding: 10px 3px 5px 3px;
+  border: none;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid;
+  text-align: left;
+  width: 300px;
+}
+img {
+  width: 5opx;
+  height: 50px;
+}
