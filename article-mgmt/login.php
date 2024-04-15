@@ -1,13 +1,12 @@
 <?php
 session_start();
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
-//if session varibale cha bhane redirect to dashboard
-
-
-
-
+//if session variable cha bhane redirect to dashboard
+if (isset($_SESSION['username'])) {
+    header('location:dashboard.php');
+}
 $login = false;
 include("connection.php");
 if (isset($_POST['Login'])) {
@@ -18,25 +17,13 @@ if (isset($_POST['Login'])) {
     if (empty($_POST["username"]) && (empty($_POST["password"]))) {
         echo "All fields are empty";
     }
-    $password = md5($password);
+    $password = md5($password); //hashing
 
     $sql = "SELECT * FROM register WHERE username ='$username' AND password = '$password'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
     if ($num == 1) {
-        //while ($row = mysqli_fetch_array($result)) {
 
-
-        // $pass = $row['password'];
-
-        //if ($password == $pass) {
-        // echo '++++++++++++++++++==';
-        // $login = true;
-        // $_SESSION['logged_in'] = true;
-        // $_SESSION['success'] = "You are now logged in";
-        // $_SESSION['username'] = $username;
-        // }
-        // }
         $_SESSION['logged_in'] = true;
         $_SESSION['success'] = "You are now logged in";
         $_SESSION['username'] = $username;

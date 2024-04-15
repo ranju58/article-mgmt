@@ -30,7 +30,7 @@ if (isset($_POST['Edit'])) {
 <body>
 
     <section class="outer-part">
-        <h2>Edit Articles</h2>
+        <h2>Edit Article</h2>
         <form class="add-article" action="#" method="POST" enctype="multipart/form-data">
             <div class="fields">
                 <label for="title">Title</label>
@@ -39,7 +39,7 @@ if (isset($_POST['Edit'])) {
                 <input type="text" name="content" id="content" placeholder="content" required /><br />
                 <label for="content">Image</label>
                 <input type="file" name="image" id="image" placeholder="choose file" accept="image/*" required /><br />
-                <button type="Submit" name="Edit">Edit Articles</button><br />
+                <button type="Submit" name="Edit">Edit Article</button><br />
             </div>
         </form>
 

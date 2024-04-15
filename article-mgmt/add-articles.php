@@ -3,8 +3,6 @@ include("connection.php");
 if (isset($_POST['Add'])) {
     $Title  = $_POST['title'];
     $Content = $_POST['content'];
-    // $Image = $_POST['image'];
-    // var_dump($_FILES);
     $Image = file_get_contents($_FILES['image']['tmp_name']);
     // var_dump($Image);
 
@@ -21,8 +19,7 @@ if (isset($_POST['Add'])) {
 
     // echo $sql . '<br>';
     $res = mysqli_query($conn, $sql);
-    //   or die("Could not insert".mysqli_error()); 
-
+    header('location:dashboard.php');
     // Close connection
     mysqli_close($conn);
 }
@@ -42,7 +39,7 @@ if (isset($_POST['Add'])) {
 <body>
 
     <section class="outer-part">
-        <h2>Add Articles</h2>
+        <h2>Add Article</h2>
         <form class="add-article" action="#" method="POST" enctype="multipart/form-data">
             <div class="fields">
                 <label for="title">Title</label>
@@ -50,8 +47,8 @@ if (isset($_POST['Add'])) {
                 <label for="content">Content</label>
                 <input type="text" name="content" id="content" placeholder="content" required /><br />
                 <label for="content">Image</label>
-                <input type="file" name="image" id="image" placeholder="choose file" accept="image/*" required /><br />
-                <button type="Submit" name="Add">Add Articles</button><br />
+                <input type="file" name="image" id="image" placeholder="choose file" accept="image/*" /><br />
+                <button type="Submit" name="Add">Add Article</button><br />
             </div>
         </form>
         <div class="viewArticle">

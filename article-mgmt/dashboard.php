@@ -2,11 +2,12 @@
 
 session_start();
 include("connection.php");
-$showAlert = false;
+// $showAlert = false;
 if (isset($_SESSION['username'])) {
-    //header("location:login.php");
-    echo "Welcome" . $_SESSION['username'] . "<br/>";
-    $showAlert = true;
+    // header("location:dashboard.php");
+    echo "Welcome" .  $_SESSION['username'] . "<br/>";
+    // $showAlert = true;
+    // echo $_SESSION['success'];
 } else {
     header("location:login.php");
 }
@@ -59,25 +60,20 @@ include("header.php");
                     $date = $row['time'];
                     $Image = $row['image'];
                 ?>
-                <tr>
-                    <td><?php echo $Title ?></td>
-                    <td><?php echo $date ?></td>
+                    <tr>
+                        <td><?php echo $Title ?></td>
+                        <td><?php echo $date ?></td>
 
-                    <td><img src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>">
-                    </td>
-                    <td><a href="edit-articles.php?id=<?php echo $id; ?>">Edit</a></td>
-                    <td><a href="delete-articles.php?id=<?php echo $id; ?>">Delete</a></td>
-                </tr>
+                        <td><img src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>">
+                        </td>
+                        <td><a href="edit-articles.php?id=<?php echo $id; ?>">Edit</a></td>
+                        <td><a href="delete-articles.php?id=<?php echo $id; ?>">Delete</a></td>
+                    </tr>
                 <?php } ?>
 
             </tbody>
         </table>
     </div>
-</body>
-
-</html>
-
-
 
 </body>
 
