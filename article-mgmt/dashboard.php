@@ -3,6 +3,7 @@
 session_start();
 include("connection.php");
 // $showAlert = false;
+
 if (isset($_SESSION['username'])) {
     // header("location:dashboard.php");
     echo "Welcome" .  $_SESSION['username'] . "<br/>";
@@ -11,6 +12,7 @@ if (isset($_SESSION['username'])) {
 } else {
     header("location:login.php");
 }
+
 $query = "SELECT * from articles ";
 $result = mysqli_query($conn, $query);
 
@@ -64,10 +66,11 @@ include("header.php");
                         <td><?php echo $Title ?></td>
                         <td><?php echo $date ?></td>
 
-                        <td><img src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>">
+                        <td><img src="images/<?php echo ($row['image']);
+                                                ?>">
                         </td>
                         <td><a href="edit-articles.php?id=<?php echo $id; ?>">Edit</a></td>
-                        <td><a href="delete-articles.php?id=<?php echo $id; ?>">Delete</a></td>
+                        <td><a href="delete-articles.php?id=<?php echo $id; ?>" onclick="return confirm('Are You Sure you want to delete?')">Delete</a></td>
                     </tr>
                 <?php } ?>
 
