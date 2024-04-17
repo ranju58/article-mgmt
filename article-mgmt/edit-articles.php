@@ -6,19 +6,28 @@ if (isset($_POST['Edit'])) {
     $id   = $_GET['id'];
     $Title = $_POST['title'];
     $Content = $_POST['content'];
-    $Image = file_get_contents($_FILES['image']['tmp_name']);
 
-
-    $sql  = "UPDATE articles SET title='$Title', content='$Content',  image='0x" . bin2hex($Image) . "' WHERE id='$id'";
-    //echo '<br>'.$sql;
-
-    $res = mysqli_query($conn, $sql);
-    // header('location:dashboard.php');
-    mysqli_close($conn);
+    //to get the image and save it in the folder named images without replacing the image with same name.
+    $filename =  explode(".", $_FILES["image"]["name"]);
+    $tempname = $_FILES["image"]["tmp_name"];
+    $newfilename = "img-" . time() . '.' . end($filename);
+    $folder = "./images/" . $newfilename;
+    $image = move_uploaded_file($tempname, $folder);
+    if (($_FILES["image"]["name"])) {
+        $sql  = "UPDATE articles SET title='$Title', content='$Content',  image='$newfilename' WHERE id='$id'";
+        //echo '<br>'.$sql;
+    } else {
+        $sql  = "UPDATE articles SET title='$Title', content='$Content' WHERE id='$id'";
+    }
+    $re = mysqli_query($conn, $sql);
+    header('location:dashboard.php');
 }
+
 $sql = "SELECT * FROM articles WHERE id='$id'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
+mysqli_close($conn);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,8 +51,9 @@ $row = mysqli_fetch_assoc($result);
                 <label for="content">Content</label>
                 <input type="text" name="content" id="content" placeholder="content" value="<?= $row['content'] ?>" /><br />
                 <label for="content">Image</label>
-                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>">
-                <input type="file" name="image" id="image" placeholder="choose file" accept="image/*" /><br />
+                <!-- <img src="data:image/jpeg;base64,<?php //$row['image']; 
+                                                        ?>"> -->
+                <input type="file" name="image" id="image" placeholder="choose file" accept="image/*" value="<?= $row['image'] ?>" /><br />
                 <button type="Submit" name="Edit">Edit Article</button><br />
             </div>
         </form>
