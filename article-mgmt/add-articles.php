@@ -3,8 +3,12 @@ include("connection.php");
 if (isset($_POST['Add'])) {
     $Title  = $_POST['title'];
     $Content = $_POST['content'];
-    $Image = file_get_contents($_FILES['image']['tmp_name']);
-    // var_dump($Image);
+    //to get the image and save it in the folder named images without replacing the image with same name.
+    $filename =  explode(".", $_FILES["image"]["name"]);
+    $tempname = $_FILES["image"]["tmp_name"];
+    $newfilename = "img-" . time() . '.' . end($filename);
+    $folder = "./images/" . $newfilename;
+    $image = move_uploaded_file($tempname, $folder);
 
 
     $date = date('Y-m-d H:i:s');
@@ -15,7 +19,7 @@ if (isset($_POST['Add'])) {
     // Performing insert query execution
 
     $sql = "INSERT INTO `articles`(`time`, `title`, `content`, `image`) VALUES ( 
-        '$date','$Title','$Content', 0x" . bin2hex($Image) . ")";
+        '$date','$Title','$Content','$newfilename')";
 
     // echo $sql . '<br>';
     $res = mysqli_query($conn, $sql);
