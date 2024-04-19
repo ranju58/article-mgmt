@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-// var_dump($_SESSION);
-
 //if session variable cha bhane redirect to dashboard
 if (isset($_SESSION['username'])) {
     header('location:dashboard.php');
@@ -22,28 +20,28 @@ if (isset($_POST['Login'])) {
     $sql = "SELECT * FROM register WHERE username ='$username' AND password = '$password'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
+    $row = mysqli_fetch_assoc($result);
+    $status = $row['status'];
     if ($num == 1) {
-
-        $_SESSION['logged_in'] = true;
-        $_SESSION['success'] = "You are now logged in";
-        $_SESSION['username'] = $username;
-        header("location:dashboard.php");
+        if ($status == 1) {
+            $_SESSION['logged_in'] = true;
+            $_SESSION['success'] = "You are now logged in";
+            $_SESSION['username'] = $username;
+            header("location:dashboard.php");
+        } else {
+            echo "Your account is not activated yet";
+        }
     } else {
         echo "Invalid Credentials";
     }
 
     mysqli_close($conn);
 }
-?>
-<!DOCTYPE html>
-<html lang="en-US">
+include("header.php");
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Login form</title>
-    <link rel="stylesheet" href="register.css" />
-</head>
+?>
+
+
 
 <body>
     <section class="outer-part">
