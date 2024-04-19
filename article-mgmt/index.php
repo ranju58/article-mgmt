@@ -1,11 +1,11 @@
 <?php
 session_start();
 include("connection.php");
-
+// $id   = $_GET['id'];
 $login = false;
-if (isset($_SESSION['username'])) {
-    header('location:dashboard.php');
-}
+// if (isset($_SESSION['username'])) {
+// header('location:dashboard.php');
+// }
 if (isset($_POST['Register'])) {
     $username = $_POST['username'];
     $password = ($_POST['password']);
@@ -28,44 +28,43 @@ if (isset($_POST['Register'])) {
     if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
         echo "Invalid email";
     }
-
-
     // include("mail-verify.php");
     $phone = $_POST['phone'];
     $number = strlen($phone);
     if (!($number == 10)) {
         echo "Invalid phone";
     }
+
     $user = "SELECT * FROM register WHERE username='$username'";
     $res_user = mysqli_query($conn, $user);
+
     if (mysqli_num_rows($res_user) > 0) {
         echo "Username already exists";
     } else {
-
         $sql = "INSERT INTO `register`(`username`, `password` , `email` , `phone`) VALUES ('$username','$hash','$email','$phone')";
         $result = mysqli_query($conn, $sql);
-
+        //to get the id
+        $last_id = mysqli_insert_id($conn);
+        // echo '<br>====' . $last_id . '<br>====';
+        $last_id = md5($last_id);
+        $update = "UPDATE register SET mdid='$last_id' WHERE username='$username'";
+        $updateResult = mysqli_query($conn, $update);
+        $activation_link = '<a href="/article-mgmt/activation-page.php?id=' . $last_id . '"Click here</a> to activate your account<br/>
+        >';
+        echo $activation_link;
         $_SESSION['logged_in'] = true;
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now registered";
         echo $_SESSION['success'];
+
         // header("location:login.php");
 
         mysqli_close($conn);
     }
 }
 
-
+include("header.php");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="register.css" />
-    <title>Registration</title>
-</head>
 
 <body>
     <section class="outer-part">
