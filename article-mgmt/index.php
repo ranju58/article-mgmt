@@ -3,42 +3,36 @@ session_start();
 include("connection.php");
 // $id   = $_GET['id'];
 $login = false;
-// if (isset($_SESSION['username'])) {
-// header('location:dashboard.php');
-// }
+
 if (isset($_POST['Register'])) {
     $username = $_POST['username'];
     $password = ($_POST['password']);
+    $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $password);
+    $password1 = ($_POST['password1']);
+    $hash = md5($password);
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $number = strlen($phone);
+
+    $user = "SELECT * FROM register WHERE username='$username'";
+    $res_user = mysqli_query($conn, $user);
     if (empty($_POST["username"]) && (empty($_POST["password"])) && (empty($_POST["email"])) && (empty($_POST["phone"]))) {
         echo "All fields are empty";
-    }
-    $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $password);
-    if (!(strlen($password) >= 8)) {
+    } else if (!(strlen($password) >= 8)) {
         echo "Password must be 8 characters long";
         if (!($regex)) {
             echo "Password must have atleast one special character";
         }
-    }
-    $password1 = ($_POST['password1']);
-    $hash = md5($password);
-    if (($password != $password1)) {
+    } else if (($password != $password1)) {
         echo "Password doesnot match";
-    }
-    $email = $_POST['email'];
-    if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
+    } else if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
         echo "Invalid email";
     }
     // include("mail-verify.php");
-    $phone = $_POST['phone'];
-    $number = strlen($phone);
-    if (!($number == 10)) {
+
+    else if (!($number == 10)) {
         echo "Invalid phone";
-    }
-
-    $user = "SELECT * FROM register WHERE username='$username'";
-    $res_user = mysqli_query($conn, $user);
-
-    if (mysqli_num_rows($res_user) > 0) {
+    } else if (mysqli_num_rows($res_user) > 0) {
         echo "Username already exists";
     } else {
         $sql = "INSERT INTO `register`(`username`, `password` , `email` , `phone`) VALUES ('$username','$hash','$email','$phone')";
@@ -49,11 +43,11 @@ if (isset($_POST['Register'])) {
         $last_id = md5($last_id);
         $update = "UPDATE register SET mdid='$last_id' WHERE username='$username'";
         $updateResult = mysqli_query($conn, $update);
-        $activation_link = '<a href="/article-mgmt/activation-page.php?id=' . $last_id . '"Click here</a> to activate your account<br/>
-        >';
+        $activation_link = '<a href="/article-mgmt/activation-page.php?id=' . $last_id . '">Click here</a> to activate your account<br/>
+        ';
         echo $activation_link;
         $_SESSION['logged_in'] = true;
-        $_SESSION['username'] = $username;
+        // $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now registered";
         echo $_SESSION['success'];
 
@@ -62,6 +56,8 @@ if (isset($_POST['Register'])) {
         mysqli_close($conn);
     }
 }
+
+
 
 include("header.php");
 ?>
